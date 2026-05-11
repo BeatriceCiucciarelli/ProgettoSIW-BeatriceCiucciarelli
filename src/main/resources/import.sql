@@ -1,0 +1,1 @@
+insert into torneo(id, nome, anno, descrizione) values(nextval('torneo_seq'), 'giovanile', 2025, 'torneo di calcio giovanile')
