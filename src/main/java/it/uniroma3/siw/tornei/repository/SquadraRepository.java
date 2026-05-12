@@ -1,5 +1,9 @@
 package it.uniroma3.siw.tornei.repository;
 
-public interface SquadraRepository {
+import org.springframework.data.repository.CrudRepository;
+
+import it.uniroma3.siw.tornei.model.Squadra;
+
+public interface SquadraRepository extends CrudRepository<Squadra, Long>{
 
 }
