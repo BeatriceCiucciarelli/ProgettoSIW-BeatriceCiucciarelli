@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Partite</title>
+</head>
+<body>
+    <h1>Calendario partite</h1>
+
+    <div th:if="${partite != null and !partite.isEmpty()}">
+        <ul>
+            <li th:each="partita : ${partite}">
+                <a th:href="@{'/partite/' + ${partita.id}}">
+                    <span th:text="${partita.squadraHome.nome}">Squadra Home</span>
+                    -
+                    <span th:text="${partita.squadraAway.nome}">Squadra Away</span>
+                    |
+                    <span th:text="${partita.dataOra}">2026-06-01T18:00</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:unless="${partite != null and !partite.isEmpty()}">
+        Nessuna partita presente.
+    </div>
+</body>
+</html>

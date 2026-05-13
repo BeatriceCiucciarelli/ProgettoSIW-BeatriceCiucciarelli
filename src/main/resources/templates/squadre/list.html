@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Squadre</title>
+</head>
+<body>
+    <h1>Lista squadre</h1>
+
+    <div th:if="${squadre != null and !squadre.isEmpty()}">
+        <ul>
+            <li th:each="squadra : ${squadre}">
+                <a th:href="@{'/squadre/' + ${squadra.id}}"
+                   th:text="${squadra.nome}">Nome squadra</a>
+            </li>
+        </ul>
+    </div>
+
+    <div th:unless="${squadre != null and !squadre.isEmpty()}">
+        Nessuna squadra presente.
+    </div>
+</body>
+</html>
