@@ -48,6 +48,15 @@
             -
             <span th:text="${partita.goalsAway}">0</span>
         </div>
+
+        <div th:if="${partita.commenti != null and !partita.commenti.isEmpty()}">
+            <h2>Commenti</h2>
+            <ul>
+                <li th:each="commento : ${partita.commenti}">
+                    <span th:text="${commento.testo}">Testo commento</span>
+                </li>
+            </ul>
+        </div>
     </div>
 
     <div th:unless="${partita}">
