@@ -12,26 +12,26 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Utente {
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private Long id;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	 @Column(nullable = false, unique=true)
-	 private String username;
+	@Column(nullable = false, unique = true)
+	private String username;
 
-	 @Column(nullable = false)
-	 private String password;
+	@Column(nullable = false)
+	private String password;
 	 
-	 @Column(nullable = false)
-	 private String ruolo;
+	@Column(nullable = false)
+	private String ruolo; // Es. "USER", "ADMIN"
 	 
-	 @OneToMany(mappedBy = "autore")
-	 private List<Commento> commenti = new ArrayList<>();
+	@OneToMany(mappedBy = "autore")
+	private List<Commento> commenti = new ArrayList<>();
 	 
-	 //COSTRUTTORE
-	 public Utente() {
-		 
-	 }
+	// COSTRUTTORE
+	public Utente() {
+	}
 
 	public Long getId() {
 		return id;
@@ -65,6 +65,14 @@ public class Utente {
 		this.ruolo = ruolo;
 	}
 
+	public List<Commento> getCommenti() {
+		return commenti;
+	}
+
+	public void setCommenti(List<Commento> commenti) {
+		this.commenti = commenti;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -74,13 +82,9 @@ public class Utente {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Utente other = (Utente) obj;
 		return Objects.equals(id, other.id);
 	}
-	 
-	
 }

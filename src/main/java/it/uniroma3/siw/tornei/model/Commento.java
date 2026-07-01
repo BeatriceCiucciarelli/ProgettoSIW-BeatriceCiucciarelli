@@ -17,26 +17,25 @@ public class Commento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@Column(nullable = false, unique=true)
+	@Column(nullable = false, length = 1000)
 	private String testo;
 
 	@Column(nullable = false)
 	private LocalDateTime dataCreazione;
 	 
-	 @Column(nullable = false)
-	 private LocalDateTime dataUltimaModifica;
+	@Column(nullable = false)
+	private LocalDateTime dataUltimaModifica;
 	
 	@ManyToOne
 	@JoinColumn(name = "utente_id", nullable = false)
 	private Utente autore;
 	
 	@ManyToOne
-    @JoinColumn(name = "partita_id", nullable = false)
-    private Partita partita;
+	@JoinColumn(name = "partita_id", nullable = false)
+	private Partita partita;
 	
-	//COSTRUTTORE
+	// COSTRUTTORE
 	public Commento() {
-		
 	}
 
 	public Long getId() {
@@ -96,14 +95,9 @@ public class Commento {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Commento other = (Commento) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
-	
 }

@@ -2,9 +2,10 @@ package it.uniroma3.siw.tornei.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -14,46 +15,40 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Giocatore {
 
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	 @Column(nullable = false)
-	 private String nome;
+	@Column(nullable = false)
+	private String nome;
 
-	 @Column(nullable = false)
-	 private String cognome;
+	@Column(nullable = false)
+	private String cognome;
 	 
-	 @Column(nullable = false)
-	 private LocalDate dataDiNascita;
+	@Column(nullable = false)
+	private LocalDate dataDiNascita;
 	 
-	 @Column(nullable=false)
-	 private Integer altezza;
+	@Column(nullable = false)
+	private Integer altezza;
 	 
-	 @Column(nullable = false)
-	 private String ruolo;
-	 
-	 /*
-		@Enumerated(EnumType.STRING)
-		@Column(nullable = false)
-		private Ruolo ruolo;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private Ruolo ruolo;
 
-		public enum Ruolo {
-    		PORTIERE,
-    		DIFENSORE,
-    		CENTROCAMPISTA,
-    		ATTACCANTE
-		}
-	 */
+	public enum Ruolo {
+		PORTIERE,
+		DIFENSORE,
+		CENTROCAMPISTA,
+		ATTACCANTE
+	}
 	 
-	 @ManyToOne
-	 @JoinColumn(name = "squadra_id", nullable = false)
-	 private Squadra squadra;
+	@ManyToOne
+	@JoinColumn(name = "squadra_id", nullable = false)
+	private Squadra squadra;
 	 
-	 //COSTRUTTORE
-	 public Giocatore() {
-		 
-	 }
+	// COSTRUTTORE
+	public Giocatore() {
+	}
 
 	public Long getId() {
 		return id;
@@ -95,6 +90,14 @@ public class Giocatore {
 		this.altezza = altezza;
 	}
 
+	public Ruolo getRuolo() {
+		return ruolo;
+	}
+
+	public void setRuolo(Ruolo ruolo) {
+		this.ruolo = ruolo;
+	}
+
 	public Squadra getSquadra() {
 		return squadra;
 	}
@@ -112,25 +115,9 @@ public class Giocatore {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Giocatore other = (Giocatore) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	public String getRuolo() {
-		return ruolo;
-	}
-
-	public void setRuolo(String ruolo) {
-		this.ruolo = ruolo;
-	}
-	 
-	
 }
-
-
-
-	

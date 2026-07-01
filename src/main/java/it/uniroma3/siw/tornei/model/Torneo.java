@@ -1,5 +1,7 @@
 package it.uniroma3.siw.tornei.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -8,6 +10,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 
@@ -15,88 +19,93 @@ import jakarta.persistence.OneToMany;
 public class Torneo {
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String nome;
 	
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private Integer anno;
 	
-	@Column(length=2000)
+	@Column(length = 2000)
 	private String descrizione;
 	
-	
-	//COSTRUTTORE
-	public Torneo() {
-		super();
-	}
-	
 	@ManyToMany
-	private Set<Squadra> squadre;
+	@JoinTable(
+		name = "torneo_squadra",
+		joinColumns = @JoinColumn(name = "torneo_id"),
+		inverseJoinColumns = @JoinColumn(name = "squadra_id")
+	)
+	private Set<Squadra> squadre = new HashSet<>();
 
-	@OneToMany(mappedBy="torneo")
-	private List<Partita> partite;
+	@OneToMany(mappedBy = "torneo")
+	private List<Partita> partite = new ArrayList<>();
 
+	// COSTRUTTORE
+	public Torneo() {
+	}
 
 	public Long getId() {
 		return id;
 	}
 
-
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public String getNome() {
 		return nome;
 	}
 
-
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
-
 
 	public Integer getAnno() {
 		return anno;
 	}
 
-
 	public void setAnno(Integer anno) {
 		this.anno = anno;
 	}
-
 
 	public String getDescrizione() {
 		return descrizione;
 	}
 
-
 	public void setDescrizione(String descrizione) {
 		this.descrizione = descrizione;
 	}
 
+	public Set<Squadra> getSquadre() {
+		return squadre;
+	}
+
+	public void setSquadre(Set<Squadra> squadre) {
+		this.squadre = squadre;
+	}
+
+	public List<Partita> getPartite() {
+		return partite;
+	}
+
+	public void setPartite(List<Partita> partite) {
+		this.partite = partite;
+	}
 
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
 	}
 
-
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Torneo other = (Torneo) obj;
 		return Objects.equals(id, other.id);
 	}
-	
-	
 }

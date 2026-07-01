@@ -13,34 +13,33 @@ import jakarta.persistence.OneToMany;
 @Entity
 public class Arbitro {
 	
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	 @Column(nullable = false)
-	 private String nome;
+	@Column(nullable = false)
+	private String nome;
 
-	 @Column(nullable = false)
-	 private String cognome;
+	@Column(nullable = false)
+	private String cognome;
 	 
-	 @Column(nullable = false, unique=true)
-	 private Integer codiceArbitrale;
-	 
-	 //COSTRUTTORE
-	 public Arbitro() {
-		 
-	 }
+	@Column(nullable = false, unique = true)
+	private Integer codiceArbitrale;
 	 
 	@OneToMany(mappedBy = "arbitro")
 	private List<Partita> partite = new ArrayList<>();
-	
+	 
+	// COSTRUTTORE
+	public Arbitro() {
+	}
+	 
 	public List<Partita> getPartite() {
-        return partite;
-    }
+		return partite;
+	}
 
-    public void setPartite(List<Partita> partite) {
-        this.partite = partite;
-    }
+	public void setPartite(List<Partita> partite) {
+		this.partite = partite;
+	}
 	 
 	public Long getId() {
 		return id;
@@ -83,14 +82,9 @@ public class Arbitro {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Arbitro other = (Arbitro) obj;
 		return Objects.equals(codiceArbitrale, other.codiceArbitrale);
 	}
-
-	
-	
 }

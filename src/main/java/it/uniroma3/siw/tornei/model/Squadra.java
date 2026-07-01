@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,36 +16,35 @@ import jakarta.persistence.OneToMany;
 
 @Entity
 public class Squadra {
-	 @Id
-	 @GeneratedValue(strategy = GenerationType.IDENTITY)
-	 private Long id;
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-	 @Column(nullable = false)
-	 private String nome;
+	@Column(nullable = false)
+	private String nome;
 
-	 @Column(nullable = false)
-	 private String citta;
+	@Column(nullable = false)
+	private String citta;
 	 
-	 @Column(nullable = false)
-	 private Integer annoFondazione;
+	@Column(nullable = false)
+	private Integer annoFondazione;
 	 
-	  
-	 @ManyToMany(mappedBy = "squadre")
-	 private Set<Torneo> tornei = new HashSet<>();
+	@ManyToMany(mappedBy = "squadre")
+	private Set<Torneo> tornei = new HashSet<>();
 	 
-	 @OneToMany(mappedBy = "squadra", cascade = CascadeType.ALL, orphanRemoval = true)
-	 private List<Giocatore> giocatori = new ArrayList<>();
+	@OneToMany(mappedBy = "squadra", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Giocatore> giocatori = new ArrayList<>();
 	 
-	 @OneToMany(mappedBy = "squadraHome")
-	 private List<Partita> partiteInCasa = new ArrayList<>();
+	@OneToMany(mappedBy = "squadraHome")
+	private List<Partita> partiteInCasa = new ArrayList<>();
 
-	 @OneToMany(mappedBy = "squadraAway")
-	 private List<Partita> partiteInTrasferta = new ArrayList<>();
+	@OneToMany(mappedBy = "squadraAway")
+	private List<Partita> partiteInTrasferta = new ArrayList<>();
 	 
-	 //COSTRUTTORE
-	 public Squadra() {
-		 
-	 }
+	// COSTRUTTORE
+	public Squadra() {
+	}
 
 	public Long getId() {
 		return id;
@@ -88,7 +86,6 @@ public class Squadra {
 		this.giocatori = giocatori;
 	}
 
-
 	public List<Partita> getPartiteInCasa() {
 		return partiteInCasa;
 	}
@@ -105,6 +102,14 @@ public class Squadra {
 		this.partiteInTrasferta = partiteInTrasferta;
 	}
 
+	public Set<Torneo> getTornei() {
+		return tornei;
+	}
+
+	public void setTornei(Set<Torneo> tornei) {
+		this.tornei = tornei;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -114,20 +119,9 @@ public class Squadra {
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Squadra other = (Squadra) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	public Set<Torneo> getTornei() {
-		return tornei;
-	}
-
-	public void setTornei(Set<Torneo> tornei) {
-		this.tornei = tornei;
-	}
-	 
 }
