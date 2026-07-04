@@ -24,7 +24,7 @@ public class Arbitro {
 	private String cognome;
 	 
 	@Column(nullable = false, unique = true)
-	private Integer codiceArbitrale;
+	private String codiceArbitrale;
 	 
 	@OneToMany(mappedBy = "arbitro")
 	private List<Partita> partite = new ArrayList<>();
@@ -65,11 +65,11 @@ public class Arbitro {
 		this.cognome = cognome;
 	}
 
-	public Integer getCodiceArbitrale() {
+	public String getCodiceArbitrale() {
 		return codiceArbitrale;
 	}
 
-	public void setCodiceArbitrale(Integer codiceArbitrale) {
+	public void setCodiceArbitrale(String codiceArbitrale) {
 		this.codiceArbitrale = codiceArbitrale;
 	}
 
