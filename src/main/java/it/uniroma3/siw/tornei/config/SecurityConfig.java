@@ -4,6 +4,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -27,17 +28,6 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    /*
-     * JdbcUserDetailsManager con query personalizzate sulla tabella "utente"
-     * (adattamento del "credentials"/"role" delle slide alla nostra tabella
-     * "utente"/"ruolo").
-     *
-     * usersByUsernameQuery: deve restituire (username, password, enabled)
-     * authoritiesByUsernameQuery: deve restituire (username, authority)
-     *   -> qui "authority" e' direttamente il valore di ruolo (es. "ADMIN", "USER"),
-     *      per questo in SecurityFilterChain usiamo hasAnyAuthority("ADMIN")
-     *      e NON hasRole("ADMIN") (che si aspetterebbe il prefisso ROLE_).
-     */
     @Bean
     public UserDetailsService userDetailsService() {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager(dataSource);
@@ -57,17 +47,20 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                // pagine pubbliche (Sezione 4.1 della traccia)
-                .requestMatchers(
+                // lettura pubblica (Sezione 4.1): SOLO in GET
+                .requestMatchers(HttpMethod.GET,
                     "/", "/login",
                     "/tornei", "/tornei/**",
                     "/squadre", "/squadre/**",
                     "/partite", "/partite/**",
                     "/css/**", "/js/**", "/images/**"
                 ).permitAll()
+                // scrittura/modifica commenti (Sezione 4.2): richiede login
+                .requestMatchers("/commenti/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/partite/*/commenti").authenticated()
                 // funzionalita' amministrative (Sezione 4.3)
                 .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
-                // tutto il resto richiede login (es. commenti - Sezione 4.2)
+                // tutto il resto (default prudente) richiede login
                 .anyRequest().authenticated()
             )
             .formLogin(form -> form

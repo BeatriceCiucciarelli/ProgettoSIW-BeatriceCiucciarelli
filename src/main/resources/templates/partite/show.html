@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Dettaglio partita</title>
 </head>
@@ -49,13 +50,39 @@
             <span th:text="${partita.goalsAway}">0</span>
         </div>
 
+        <h2>Commenti</h2>
+
         <div th:if="${partita.commenti != null and !partita.commenti.isEmpty()}">
-            <h2>Commenti</h2>
             <ul>
                 <li th:each="commento : ${partita.commenti}">
                     <span th:text="${commento.testo}">Testo commento</span>
+                    <span> - </span>
+                    <span th:text="${commento.autore.username}">autore</span>
+
+                    <!-- Il link "Modifica" appare solo se l'utente loggato
+                         e' proprio l'autore di QUESTO commento -->
+                    <span sec:authorize="isAuthenticated()"
+                          th:if="${commento.autore.username == #authentication.name}">
+                        <a th:href="@{'/commenti/' + ${commento.id} + '/modifica'}">[Modifica]</a>
+                    </span>
                 </li>
             </ul>
+        </div>
+        <div th:unless="${partita.commenti != null and !partita.commenti.isEmpty()}">
+            Nessun commento presente.
+        </div>
+
+        <!-- Form per aggiungere un commento: visibile solo se autenticato -->
+        <div sec:authorize="isAuthenticated()">
+            <h3>Aggiungi un commento</h3>
+            <form th:action="@{'/partite/' + ${partita.id} + '/commenti'}" method="post">
+                <textarea name="testo" rows="3" cols="40" required></textarea>
+                <br/>
+                <button type="submit">Invia commento</button>
+            </form>
+        </div>
+        <div sec:authorize="!isAuthenticated()">
+            <p><a th:href="@{/login}">Accedi</a> per lasciare un commento.</p>
         </div>
     </div>
 
