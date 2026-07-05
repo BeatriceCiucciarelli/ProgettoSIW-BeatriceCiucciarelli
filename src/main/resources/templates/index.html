@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Tornei</title>
 </head>
 <body>
     <h1>Sistema Tornei di Calcio</h1>
+
+    <div>
+        <span sec:authorize="!isAuthenticated()">
+            <a th:href="@{/login}">Login</a>
+        </span>
+        <span sec:authorize="isAuthenticated()">
+            Benvenuto, <span sec:authentication="name">utente</span> —
+            <form th:action="@{/logout}" method="post" style="display:inline">
+                <button type="submit">Logout</button>
+            </form>
+        </span>
+    </div>
+
     <ul>
         <li><a th:href="@{/tornei}">Tornei</a></li>
         <li><a th:href="@{/squadre}">Squadre</a></li>
