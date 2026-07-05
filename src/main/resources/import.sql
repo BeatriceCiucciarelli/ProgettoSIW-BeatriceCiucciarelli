@@ -33,9 +33,9 @@ insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, 
 insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-10-05 15:30:00', 'Campo Comunale Foligno', null, null, 'SCHEDULED', 2, 4, 1, 3);
 insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2026-06-15 18:00:00', 'Stadio Libero Liberati', null, null, 'SCHEDULED', 3, 1, 3, 1);
 
-insert into utente (username, password, ruolo) values ('admin', '$2a$10$7QJ8G1z3K5v2X9mN4pL6ueO3YwRtBkZdHsVcFiMjAnDoPqEuGlWxy', 'ADMIN');
-insert into utente (username, password, ruolo) values ('mario.rossi', '$2a$10$7QJ8G1z3K5v2X9mN4pL6ueO3YwRtBkZdHsVcFiMjAnDoPqEuGlWxy', 'USER');
-insert into utente (username, password, ruolo) values ('andrea.neri', '$2a$10$7QJ8G1z3K5v2X9mN4pL6ueO3YwRtBkZdHsVcFiMjAnDoPqEuGlWxy', 'USER');
+insert into utente (username, password, ruolo) values ('admin', '$2b$12$mBQU7R/BUi2THZPCpPYZaeAOJz8RJh8jlzbe1clb077T0SYnEbscK', 'ADMIN');
+insert into utente (username, password, ruolo) values ('mario.rossi', '$2b$12$mBQU7R/BUi2THZPCpPYZaeAOJz8RJh8jlzbe1clb077T0SYnEbscK', 'USER');
+insert into utente (username, password, ruolo) values ('andrea.neri', '$2b$12$mBQU7R/BUi2THZPCpPYZaeAOJz8RJh8jlzbe1clb077T0SYnEbscK', 'USER');
 
 insert into commento (testo, data_creazione, data_ultima_modifica, utente_id, partita_id) values ('Bella partita, ottimo risultato!', '2025-09-10 17:30:00', '2025-09-10 17:30:00', 2, 1);
 insert into commento (testo, data_creazione, data_ultima_modifica, utente_id, partita_id) values ('Peccato per il pareggio, potevamo fare meglio.', '2025-09-17 18:00:00', '2025-09-17 18:00:00', 3, 2);
