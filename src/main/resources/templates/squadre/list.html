@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Squadre</title>
 </head>
 <body>
     <h1>Lista squadre</h1>
+
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <a th:href="@{/admin/squadre/nuova}">+ Nuova squadra</a>
+    </div>
 
     <div th:if="${squadre != null and !squadre.isEmpty()}">
         <ul>

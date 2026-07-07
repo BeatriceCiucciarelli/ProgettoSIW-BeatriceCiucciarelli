@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Squadra</title>
 </head>
@@ -8,20 +9,34 @@
         <h1 th:text="${squadra.nome}">Nome squadra</h1>
 
         <div>
-            Città: <span th:text="${squadra.citta}">Città</span>
+            Citta': <span th:text="${squadra.citta}">Citta'</span>
         </div>
 
         <div>
             Anno di fondazione: <span th:text="${squadra.annoFondazione}">2000</span>
         </div>
 
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{'/admin/squadre/' + ${squadra.id} + '/modifica'}">Modifica squadra</a>
+        </div>
+
         <h2>Giocatori</h2>
+
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{'/admin/squadre/' + ${squadra.id} + '/giocatori/nuovo'}">+ Nuovo giocatore</a>
+        </div>
 
         <div th:if="${squadra.giocatori != null and !squadra.giocatori.isEmpty()}">
             <ul>
                 <li th:each="giocatore : ${squadra.giocatori}">
                     <span th:text="${giocatore.nome}">Nome</span>
                     <span th:text="${giocatore.cognome}">Cognome</span>
+                    <span> - </span>
+                    <span th:text="${giocatore.ruolo}">RUOLO</span>
+
+                    <span sec:authorize="hasAuthority('ADMIN')">
+                        <a th:href="@{'/admin/giocatori/' + ${giocatore.id} + '/modifica'}">[Modifica]</a>
+                    </span>
                 </li>
             </ul>
         </div>
