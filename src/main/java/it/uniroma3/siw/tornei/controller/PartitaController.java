@@ -87,11 +87,29 @@ public class PartitaController {
         partita.setSquadraHome(squadraHome);
         partita.setSquadraAway(squadraAway);
         partita.setArbitro(arbitro);
-        // una partita appena registrata e' sempre programmata, senza risultato
         partita.setStato(Partita.StatoPartita.SCHEDULED);
 
         Partita salvata = this.partitaService.salva(partita);
 
         return "redirect:/partite/" + salvata.getId();
+    }
+
+    @GetMapping("/admin/partite/{id}/risultato")
+    public String formRisultato(@PathVariable("id") Long id, Model model) {
+        Optional<Partita> partitaOptional = this.partitaService.findById(id);
+        if (partitaOptional.isEmpty()) {
+            return "redirect:/partite";
+        }
+        model.addAttribute("partita", partitaOptional.get());
+        return "admin/partite/risultato";
+    }
+
+    @PostMapping("/admin/partite/{id}/risultato")
+    public String salvaRisultato(@PathVariable("id") Long id,
+                                  @RequestParam("goalsHome") Integer goalsHome,
+                                  @RequestParam("goalsAway") Integer goalsAway) {
+
+        Partita aggiornata = this.partitaService.inserisciRisultato(id, goalsHome, goalsAway);
+        return "redirect:/partite/" + aggiornata.getId();
     }
 }

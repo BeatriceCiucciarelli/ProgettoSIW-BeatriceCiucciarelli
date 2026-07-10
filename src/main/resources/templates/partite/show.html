@@ -50,6 +50,14 @@
             <span th:text="${partita.goalsAway}">0</span>
         </div>
 
+        <!-- Admin: inserimento/modifica risultato -->
+        <div sec:authorize="hasAuthority('ADMIN')">
+            <a th:href="@{'/admin/partite/' + ${partita.id} + '/risultato'}"
+               th:text="${partita.stato.toString() == 'PLAYED'} ? 'Modifica risultato' : 'Inserisci risultato'">
+               Inserisci risultato
+            </a>
+        </div>
+
         <h2>Commenti</h2>
 
         <div th:if="${partita.commenti != null and !partita.commenti.isEmpty()}">
@@ -59,8 +67,6 @@
                     <span> - </span>
                     <span th:text="${commento.autore.username}">autore</span>
 
-                    <!-- Il link "Modifica" appare solo se l'utente loggato
-                         e' proprio l'autore di QUESTO commento -->
                     <span sec:authorize="isAuthenticated()"
                           th:if="${commento.autore.username == #authentication.name}">
                         <a th:href="@{'/commenti/' + ${commento.id} + '/modifica'}">[Modifica]</a>
@@ -72,11 +78,10 @@
             Nessun commento presente.
         </div>
 
-        <!-- Form per aggiungere un commento: visibile solo se autenticato -->
         <div sec:authorize="isAuthenticated()">
             <h3>Aggiungi un commento</h3>
             <form th:action="@{'/partite/' + ${partita.id} + '/commenti'}" method="post">
-                <textarea name="testo" rows="3" cols="40" required></textarea>
+                <textarea name="testo" rows="3" cols="40" required="required"></textarea>
                 <br/>
                 <button type="submit">Invia commento</button>
             </form>

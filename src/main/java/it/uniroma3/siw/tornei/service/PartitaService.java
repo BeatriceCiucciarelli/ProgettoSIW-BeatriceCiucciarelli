@@ -31,11 +31,24 @@ public class PartitaService {
         return this.partitaRepository.findById(id);
     }
 
-    /* Caso d'uso: registrazione di una partita (Sezione 4.3 - Amministratore).
-     * La partita viene creata con stato SCHEDULED e senza risultato:
-     * l'inserimento del risultato e' un caso d'uso separato (prossimo passo). */
+    /* Caso d'uso: registrazione di una partita (Sezione 4.3 - Amministratore). */
     @Transactional
     public Partita salva(Partita partita) {
         return this.partitaRepository.save(partita);
+    }
+
+    /* Caso d'uso: inserimento del risultato di una partita (Sezione 4.3 - Amministratore).
+     * Porta la partita da SCHEDULED a PLAYED impostando i goal.
+     * Funziona anche per correggere un risultato gia' inserito (resta PLAYED). */
+    @Transactional
+    public Partita inserisciRisultato(Long id, Integer goalsHome, Integer goalsAway) {
+        Partita partita = this.partitaRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Partita non trovata con id " + id));
+
+        partita.setGoalsHome(goalsHome);
+        partita.setGoalsAway(goalsAway);
+        partita.setStato(Partita.StatoPartita.PLAYED);
+
+        return partita;
     }
 }
