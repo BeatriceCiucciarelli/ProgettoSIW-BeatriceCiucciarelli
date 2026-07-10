@@ -31,15 +31,11 @@ public class PartitaService {
         return this.partitaRepository.findById(id);
     }
 
-    /* Caso d'uso: registrazione di una partita (Sezione 4.3 - Amministratore). */
     @Transactional
     public Partita salva(Partita partita) {
         return this.partitaRepository.save(partita);
     }
 
-    /* Caso d'uso: inserimento del risultato di una partita (Sezione 4.3 - Amministratore).
-     * Porta la partita da SCHEDULED a PLAYED impostando i goal.
-     * Funziona anche per correggere un risultato gia' inserito (resta PLAYED). */
     @Transactional
     public Partita inserisciRisultato(Long id, Integer goalsHome, Integer goalsAway) {
         Partita partita = this.partitaRepository.findById(id)
@@ -50,5 +46,19 @@ public class PartitaService {
         partita.setStato(Partita.StatoPartita.PLAYED);
 
         return partita;
+    }
+
+    /*
+     * Caso d'uso: eliminazione di una partita (Sezione 4.3 - Amministratore).
+     * Nessun controllo di integrita' necessario qui: i commenti collegati
+     * si cancellano automaticamente grazie a cascade=ALL + orphanRemoval=true
+     * su Partita.commenti. Nessun'altra entita' dipende da Partita.
+     */
+    @Transactional
+    public void elimina(Long id) {
+        Partita partita = this.partitaRepository.findById(id)
+            .orElseThrow(() -> new IllegalArgumentException("Partita non trovata con id " + id));
+
+        this.partitaRepository.delete(partita);
     }
 }

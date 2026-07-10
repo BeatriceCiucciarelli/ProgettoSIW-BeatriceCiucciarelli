@@ -112,4 +112,10 @@ public class PartitaController {
         Partita aggiornata = this.partitaService.inserisciRisultato(id, goalsHome, goalsAway);
         return "redirect:/partite/" + aggiornata.getId();
     }
+
+    @PostMapping("/admin/partite/{id}/elimina")
+    public String eliminaPartita(@PathVariable("id") Long id) {
+        this.partitaService.elimina(id);
+        return "redirect:/partite";
+    }
 }

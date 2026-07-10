@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.uniroma3.siw.tornei.model.Squadra;
 import it.uniroma3.siw.tornei.service.SquadraService;
@@ -68,5 +69,16 @@ public class SquadraController {
     public String aggiornaSquadra(@PathVariable("id") Long id, @ModelAttribute("squadra") Squadra squadraForm) {
         Squadra aggiornata = this.squadraService.aggiorna(id, squadraForm);
         return "redirect:/squadre/" + aggiornata.getId();
+    }
+
+    @PostMapping("/admin/squadre/{id}/elimina")
+    public String eliminaSquadra(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
+        try {
+            this.squadraService.elimina(id);
+            return "redirect:/squadre";
+        } catch (IllegalStateException e) {
+            redirectAttributes.addFlashAttribute("erroreEliminazione", e.getMessage());
+            return "redirect:/squadre/" + id;
+        }
     }
 }

@@ -16,8 +16,18 @@
             Anno di fondazione: <span th:text="${squadra.annoFondazione}">2000</span>
         </div>
 
+        <div sec:authorize="hasAuthority('ADMIN')" th:if="${erroreEliminazione}">
+            <p style="color:red" th:text="${erroreEliminazione}">Errore eliminazione</p>
+        </div>
+
         <div sec:authorize="hasAuthority('ADMIN')">
             <a th:href="@{'/admin/squadre/' + ${squadra.id} + '/modifica'}">Modifica squadra</a>
+            &nbsp;|&nbsp;
+            <form th:action="@{'/admin/squadre/' + ${squadra.id} + '/elimina'}" method="post"
+                  style="display:inline"
+                  onsubmit="return confirm('Eliminare definitivamente questa squadra?');">
+                <button type="submit">Elimina squadra</button>
+            </form>
         </div>
 
         <h2>Giocatori</h2>

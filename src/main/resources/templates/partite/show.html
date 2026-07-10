@@ -50,12 +50,17 @@
             <span th:text="${partita.goalsAway}">0</span>
         </div>
 
-        <!-- Admin: inserimento/modifica risultato -->
         <div sec:authorize="hasAuthority('ADMIN')">
             <a th:href="@{'/admin/partite/' + ${partita.id} + '/risultato'}"
                th:text="${partita.stato.toString() == 'PLAYED'} ? 'Modifica risultato' : 'Inserisci risultato'">
                Inserisci risultato
             </a>
+            &nbsp;|&nbsp;
+            <form th:action="@{'/admin/partite/' + ${partita.id} + '/elimina'}" method="post"
+                  style="display:inline"
+                  onsubmit="return confirm('Eliminare definitivamente questa partita?');">
+                <button type="submit">Elimina partita</button>
+            </form>
         </div>
 
         <h2>Commenti</h2>
