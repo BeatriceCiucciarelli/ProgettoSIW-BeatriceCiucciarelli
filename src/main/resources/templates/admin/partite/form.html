@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Registra partita</title>
+</head>
+<body>
+    <h1>Registra nuova partita</h1>
+
+    <form th:action="@{/admin/partite}" th:object="${partita}" method="post">
+
+        <div>
+            <label for="torneoId">Torneo</label>
+            <select id="torneoId" name="torneoId" required="required">
+                <option th:each="torneo : ${tornei}"
+                        th:value="${torneo.id}"
+                        th:text="${torneo.nome}">Nome torneo</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="squadraHomeId">Squadra home</label>
+            <select id="squadraHomeId" name="squadraHomeId" required="required">
+                <option th:each="squadra : ${squadre}"
+                        th:value="${squadra.id}"
+                        th:text="${squadra.nome}">Nome squadra</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="squadraAwayId">Squadra away</label>
+            <select id="squadraAwayId" name="squadraAwayId" required="required">
+                <option th:each="squadra : ${squadre}"
+                        th:value="${squadra.id}"
+                        th:text="${squadra.nome}">Nome squadra</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="arbitroId">Arbitro</label>
+            <select id="arbitroId" name="arbitroId" required="required">
+                <option th:each="arbitro : ${arbitri}"
+                        th:value="${arbitro.id}"
+                        th:text="${arbitro.nome + ' ' + arbitro.cognome}">Nome Arbitro</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="dataOra">Data e ora</label>
+            <input type="datetime-local" id="dataOra" th:field="*{dataOra}" required="required" />
+        </div>
+
+        <div>
+            <label for="luogo">Luogo</label>
+            <input type="text" id="luogo" th:field="*{luogo}" required="required" />
+        </div>
+
+        <button type="submit">Registra partita</button>
+    </form>
+</body>
+</html>

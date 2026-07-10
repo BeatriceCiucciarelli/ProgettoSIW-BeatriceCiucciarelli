@@ -30,4 +30,12 @@ public class PartitaService {
     public Optional<Partita> findById(Long id) {
         return this.partitaRepository.findById(id);
     }
+
+    /* Caso d'uso: registrazione di una partita (Sezione 4.3 - Amministratore).
+     * La partita viene creata con stato SCHEDULED e senza risultato:
+     * l'inserimento del risultato e' un caso d'uso separato (prossimo passo). */
+    @Transactional
+    public Partita salva(Partita partita) {
+        return this.partitaRepository.save(partita);
+    }
 }

@@ -1,6 +1,7 @@
 package it.uniroma3.siw.tornei.model;
 
 import java.time.LocalDateTime;
+import org.springframework.format.annotation.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -24,6 +25,7 @@ public class Partita {
 	private Long id;
 
 	@Column(nullable = false)
+	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime dataOra;
 
 	@Column(nullable = false)

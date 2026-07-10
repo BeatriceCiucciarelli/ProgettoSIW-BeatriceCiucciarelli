@@ -1,10 +1,15 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <title>Partite</title>
 </head>
 <body>
     <h1>Calendario partite</h1>
+
+    <div sec:authorize="hasAuthority('ADMIN')">
+        <a th:href="@{/admin/partite/nuova}">+ Registra partita</a>
+    </div>
 
     <div th:if="${partite != null and !partite.isEmpty()}">
         <ul>
