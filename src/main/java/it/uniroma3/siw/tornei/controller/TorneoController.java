@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import it.uniroma3.siw.tornei.dto.RigaClassifica;
 import it.uniroma3.siw.tornei.model.Torneo;
 import it.uniroma3.siw.tornei.service.TorneoService;
 
@@ -40,8 +41,18 @@ public class TorneoController {
 		return "tornei/list";
 	}
 
+	@GetMapping("/tornei/{id}/classifica")
+	public String classifica(@PathVariable("id") Long id, Model model) {
+		Optional<Torneo> torneoOptional = this.torneoService.findById(id);
+		if (torneoOptional.isEmpty()) {
+			return "redirect:/tornei";
+		}
+		model.addAttribute("torneo", torneoOptional.get());
+		model.addAttribute("classifica", this.torneoService.calcolaClassifica(id));
+		return "tornei/classifica";
+	}
+
 	// ===================== FUNZIONALITA' ADMIN (Sezione 4.3) =====================
-	// Protette da SecurityConfig tramite il pattern "/admin/**" -> hasAnyAuthority("ADMIN")
 
 	@GetMapping("/admin/tornei/nuovo")
 	public String formNuovoTorneo(Model model) {
