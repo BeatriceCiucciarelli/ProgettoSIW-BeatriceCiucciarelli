@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Analisi prestazioni</title>
+</head>
+<body>
+    <h1>Analisi sperimentale: strategie di accesso ai dati</h1>
+
+    <p>
+        Confronto tra diverse strategie di fetch per il caso d'uso
+        "elenco delle partite di un torneo, con le rispettive squadre
+        home/away" (lo stesso dato usato per calcolare la classifica).
+    </p>
+
+    <form th:action="@{/admin/analisi-prestazioni}" method="get">
+        <label for="torneoId">Torneo</label>
+        <select id="torneoId" name="torneoId">
+            <option th:each="torneo : ${tornei}"
+                    th:value="${torneo.id}"
+                    th:text="${torneo.nome}"
+                    th:selected="${torneoSelezionato != null and torneo.id == torneoSelezionato}">
+            </option>
+        </select>
+        <button type="submit">Esegui analisi</button>
+    </form>
+
+    <div th:if="${risultati}">
+        <h2>Risultati</h2>
+        <table border="1" cellpadding="5">
+            <thead>
+                <tr>
+                    <th>Strategia</th>
+                    <th>Partite trovate</th>
+                    <th>Numero query SQL eseguite</th>
+                    <th>Tempo (ms)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="r : ${risultati}">
+                    <td th:text="${r.strategia}">Strategia</td>
+                    <td th:text="${r.numeroPartite}">0</td>
+                    <td th:text="${r.numeroQuery}">0</td>
+                    <td th:text="${#numbers.formatDecimal(r.tempoMillisecondi, 1, 2)}">0.00</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
