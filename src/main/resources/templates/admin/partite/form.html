@@ -46,12 +46,14 @@
 
         <div>
             <label for="dataOra">Data e ora</label>
-            <input type="datetime-local" id="dataOra" th:field="*{dataOra}" required="required" />
+            <input type="datetime-local" id="dataOra" th:field="*{dataOra}" />
+            <div style="color:red" th:if="${#fields.hasErrors('dataOra')}" th:errors="*{dataOra}">Errore data</div>
         </div>
 
         <div>
             <label for="luogo">Luogo</label>
-            <input type="text" id="luogo" th:field="*{luogo}" required="required" />
+            <input type="text" id="luogo" th:field="*{luogo}" />
+            <div style="color:red" th:if="${#fields.hasErrors('luogo')}" th:errors="*{luogo}">Errore luogo</div>
         </div>
 
         <button type="submit">Registra partita</button>

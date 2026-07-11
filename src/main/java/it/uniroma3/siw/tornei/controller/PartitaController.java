@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import it.uniroma3.siw.tornei.service.ArbitroService;
 import it.uniroma3.siw.tornei.service.PartitaService;
 import it.uniroma3.siw.tornei.service.SquadraService;
 import it.uniroma3.siw.tornei.service.TorneoService;
+import jakarta.validation.Valid;
 
 @Controller
 public class PartitaController {
@@ -38,8 +40,6 @@ public class PartitaController {
         this.arbitroService = arbitroService;
     }
 
-    // ===================== FUNZIONALITA' PUBBLICHE (Sezione 4.1) =====================
-
     @GetMapping("/partite")
     public String list(Model model) {
         List<Partita> partite = this.partitaService.findAll();
@@ -56,8 +56,6 @@ public class PartitaController {
         return "partite/show";
     }
 
-    // ===================== FUNZIONALITA' ADMIN (Sezione 4.3) =====================
-
     @GetMapping("/admin/partite/nuova")
     public String formNuovaPartita(Model model) {
         model.addAttribute("partita", new Partita());
@@ -68,11 +66,23 @@ public class PartitaController {
     }
 
     @PostMapping("/admin/partite")
-    public String creaPartita(@ModelAttribute("partita") Partita partita,
+    public String creaPartita(@Valid @ModelAttribute("partita") Partita partita,
+                               BindingResult bindingResult,
                                @RequestParam("torneoId") Long torneoId,
                                @RequestParam("squadraHomeId") Long squadraHomeId,
                                @RequestParam("squadraAwayId") Long squadraAwayId,
-                               @RequestParam("arbitroId") Long arbitroId) {
+                               @RequestParam("arbitroId") Long arbitroId,
+                               Model model) {
+
+        // @Valid ha gia' controllato dataOra/luogo/goals. Se ci sono errori,
+        // dobbiamo ripopolare le select prima di ri-mostrare il form,
+        // altrimenti sarebbero vuote.
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("tornei", this.torneoService.findAll());
+            model.addAttribute("squadre", this.squadraService.findAll());
+            model.addAttribute("arbitri", this.arbitroService.findAll());
+            return "admin/partite/form";
+        }
 
         Torneo torneo = this.torneoService.findById(torneoId)
             .orElseThrow(() -> new IllegalArgumentException("Torneo non trovato"));

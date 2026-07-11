@@ -1,18 +1,21 @@
 package it.uniroma3.siw.tornei.controller;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.uniroma3.siw.tornei.model.Squadra;
+import it.uniroma3.siw.tornei.model.Torneo;
 import it.uniroma3.siw.tornei.service.SquadraService;
+import jakarta.validation.Valid;
 
 @Controller
 public class SquadraController {
@@ -22,8 +25,6 @@ public class SquadraController {
     public SquadraController(SquadraService squadraService) {
         this.squadraService = squadraService;
     }
-
-    // ===================== FUNZIONALITA' PUBBLICHE (Sezione 4.1) =====================
 
     @GetMapping("/squadre")
     public String list(Model model) {
@@ -41,8 +42,6 @@ public class SquadraController {
         return "squadre/show";
     }
 
-    // ===================== FUNZIONALITA' ADMIN (Sezione 4.3) =====================
-
     @GetMapping("/admin/squadre/nuova")
     public String formNuovaSquadra(Model model) {
         model.addAttribute("squadra", new Squadra());
@@ -50,7 +49,10 @@ public class SquadraController {
     }
 
     @PostMapping("/admin/squadre")
-    public String creaSquadra(@ModelAttribute("squadra") Squadra squadra) {
+    public String creaSquadra(@Valid @ModelAttribute("squadra") Squadra squadra, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/squadre/form";
+        }
         Squadra salvata = this.squadraService.salva(squadra);
         return "redirect:/squadre/" + salvata.getId();
     }
@@ -66,19 +68,20 @@ public class SquadraController {
     }
 
     @PostMapping("/admin/squadre/{id}")
-    public String aggiornaSquadra(@PathVariable("id") Long id, @ModelAttribute("squadra") Squadra squadraForm) {
+    public String aggiornaSquadra(@PathVariable("id") Long id,
+                                   @Valid @ModelAttribute("squadra") Squadra squadraForm,
+                                   BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            squadraForm.setId(id);
+            return "admin/squadre/form";
+        }
         Squadra aggiornata = this.squadraService.aggiorna(id, squadraForm);
         return "redirect:/squadre/" + aggiornata.getId();
     }
 
     @PostMapping("/admin/squadre/{id}/elimina")
-    public String eliminaSquadra(@PathVariable("id") Long id, RedirectAttributes redirectAttributes) {
-        try {
-            this.squadraService.elimina(id);
-            return "redirect:/squadre";
-        } catch (IllegalStateException e) {
-            redirectAttributes.addFlashAttribute("erroreEliminazione", e.getMessage());
-            return "redirect:/squadre/" + id;
-        }
+    public String eliminaSquadra(@PathVariable("id") Long id) {
+        this.squadraService.elimina(id);
+        return "redirect:/squadre";
     }
 }

@@ -44,27 +44,27 @@ public class Partita {
 	@Min(value = 0, message = "I goal non possono essere negativi")
 	private Integer goalsAway;
 
-	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private StatoPartita stato;
 
-	@NotNull(message = "Il torneo e' obbligatorio")
+	// NOTA: nessun @NotNull su queste 4 associazioni. Vengono assegnate dal
+	// controller DOPO il binding iniziale del form (l'utente sceglie solo
+	// gli ID da una <select>), quindi al momento in cui @Valid scatta
+	// sarebbero sempre null. L'integrita' e' comunque garantita da
+	// findById(...).orElseThrow(...) nel controller.
 	@ManyToOne
 	@JoinColumn(name = "torneo_id", nullable = false)
 	private Torneo torneo;
 
-	@NotNull(message = "La squadra home e' obbligatoria")
 	@ManyToOne
 	@JoinColumn(name = "squadra_home_id", nullable = false)
 	private Squadra squadraHome;
 
-	@NotNull(message = "La squadra away e' obbligatoria")
 	@ManyToOne
 	@JoinColumn(name = "squadra_away_id", nullable = false)
 	private Squadra squadraAway;
 
-	@NotNull(message = "L'arbitro e' obbligatorio")
 	@ManyToOne
 	@JoinColumn(name = "arbitro_id", nullable = false)
 	private Arbitro arbitro;

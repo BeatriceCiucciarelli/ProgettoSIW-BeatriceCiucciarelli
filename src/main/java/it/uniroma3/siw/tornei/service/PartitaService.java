@@ -36,8 +36,20 @@ public class PartitaService {
         return this.partitaRepository.save(partita);
     }
 
+    /*
+     * Validazione manuale dei goal: qui NON passiamo per @Valid (il metodo
+     * riceve due Integer via @RequestParam, non un oggetto Partita
+     * completo), quindi il controllo va fatto esplicitamente.
+     */
     @Transactional
     public Partita inserisciRisultato(Long id, Integer goalsHome, Integer goalsAway) {
+        if (goalsHome == null || goalsAway == null) {
+            throw new IllegalArgumentException("Il risultato deve avere entrambi i punteggi");
+        }
+        if (goalsHome < 0 || goalsAway < 0) {
+            throw new IllegalArgumentException("I goal non possono essere negativi");
+        }
+
         Partita partita = this.partitaRepository.findById(id)
             .orElseThrow(() -> new IllegalArgumentException("Partita non trovata con id " + id));
 
@@ -48,12 +60,6 @@ public class PartitaService {
         return partita;
     }
 
-    /*
-     * Caso d'uso: eliminazione di una partita (Sezione 4.3 - Amministratore).
-     * Nessun controllo di integrita' necessario qui: i commenti collegati
-     * si cancellano automaticamente grazie a cascade=ALL + orphanRemoval=true
-     * su Partita.commenti. Nessun'altra entita' dipende da Partita.
-     */
     @Transactional
     public void elimina(Long id) {
         Partita partita = this.partitaRepository.findById(id)
