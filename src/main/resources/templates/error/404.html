@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Pagina non trovata</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Non trovato')}"></head>
 <body>
-    <h1>404 - Non trovato</h1>
-    <p th:if="${messaggio}" th:text="${messaggio}">
-        La risorsa richiesta non esiste.
-    </p>
-    <p th:unless="${messaggio}">
-        La pagina che stai cercando non esiste o e' stata rimossa.
-    </p>
-    <p><a th:href="@{/}">Torna alla home</a></p>
+<nav th:replace="~{fragments/common :: nav}"></nav>
+<div class="container text-center py-5">
+    <h1 class="display-4">404</h1>
+    <p class="lead" th:if="${messaggio}" th:text="${messaggio}">La risorsa richiesta non esiste.</p>
+    <p class="lead" th:unless="${messaggio}">La pagina che stai cercando non esiste o e' stata rimossa.</p>
+    <a th:href="@{/}" class="btn btn-primary">Torna alla home</a>
+</div>
 </body>
 </html>

@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>Torneo</title>
-</head>
+<head th:replace="~{fragments/common :: head(title=${torneo.nome})}"></head>
 <body>
-    <h1 th:text="${torneo.nome}">Nome torneo</h1>
+<nav th:replace="~{fragments/common :: nav}"></nav>
 
-    <div>
-        Anno: <span th:text="${torneo.anno}">2000</span>
-    </div>
+<div class="container">
+    <div class="card">
+        <div class="card-body">
+            <h1 class="card-title" th:text="${torneo.nome}">Nome torneo</h1>
+            <h6 class="card-subtitle mb-3 text-muted" th:text="${torneo.anno}">2026</h6>
+            <p class="card-text" th:text="${torneo.descrizione}">Descrizione</p>
 
-    <div>
-        Descrizione: <span th:text="${torneo.descrizione}">Descrizione</span>
+            <a th:href="@{'/tornei/' + ${torneo.id} + '/classifica'}" class="btn btn-primary">
+                Vedi classifica
+            </a>
+            <a th:href="@{'/tornei/' + ${torneo.id} + '/classifica-react'}" class="btn btn-outline-primary">
+                Vedi classifica (React)
+            </a>
+            <a sec:authorize="hasAuthority('ADMIN')"
+               th:href="@{'/admin/tornei/' + ${torneo.id} + '/modifica'}"
+               class="btn btn-outline-secondary">
+                Modifica torneo
+            </a>
+        </div>
     </div>
+</div>
 
-    <div>
-        <a th:href="@{'/tornei/' + ${torneo.id} + '/classifica'}">Vedi classifica</a>
-    </div>
-
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{'/admin/tornei/' + ${torneo.id} + '/modifica'}">Modifica torneo</a>
-    </div>
 </body>
 </html>

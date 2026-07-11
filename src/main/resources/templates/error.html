@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Errore</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Errore')}"></head>
 <body>
-    <h1>Si e' verificato un errore</h1>
-    <p>
-        Qualcosa e' andato storto durante l'elaborazione della richiesta.
-        Riprova piu' tardi o torna alla home.
-    </p>
-    <p><a th:href="@{/}">Torna alla home</a></p>
+<nav th:replace="~{fragments/common :: nav}"></nav>
+<div class="container text-center py-5">
+    <h1 class="display-5">Si e' verificato un errore</h1>
+    <p class="lead">Qualcosa e' andato storto durante l'elaborazione della richiesta.</p>
+    <a th:href="@{/}" class="btn btn-primary">Torna alla home</a>
+</div>
 </body>
 </html>

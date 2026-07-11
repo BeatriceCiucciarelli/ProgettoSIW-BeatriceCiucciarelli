@@ -1,27 +1,33 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>Squadre</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Lista squadre')}"></head>
 <body>
-    <h1>Lista squadre</h1>
+<nav th:replace="~{fragments/common :: nav}"></nav>
 
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/admin/squadre/nuova}">+ Nuova squadra</a>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Lista squadre</h1>
+        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/squadre/nuova}" class="btn btn-success">
+            + Nuova squadra
+        </a>
     </div>
 
-    <div th:if="${squadre != null and !squadre.isEmpty()}">
-        <ul>
-            <li th:each="squadra : ${squadre}">
-                <a th:href="@{'/squadre/' + ${squadra.id}}"
-                   th:text="${squadra.nome}">Nome squadra</a>
-            </li>
-        </ul>
+    <div th:if="${squadre != null and !squadre.isEmpty()}" class="row g-3">
+        <div class="col-md-4" th:each="squadra : ${squadre}">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title" th:text="${squadra.nome}">Nome squadra</h5>
+                    <a th:href="@{'/squadre/' + ${squadra.id}}" class="btn btn-outline-primary btn-sm">Dettagli</a>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div th:unless="${squadre != null and !squadre.isEmpty()}">
+    <div th:unless="${squadre != null and !squadre.isEmpty()}" class="alert alert-info">
         Nessuna squadra presente.
     </div>
+</div>
+
 </body>
 </html>

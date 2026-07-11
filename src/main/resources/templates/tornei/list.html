@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>Tornei</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Lista tornei')}"></head>
 <body>
-    <h1>Lista tornei</h1>
+<nav th:replace="~{fragments/common :: nav}"></nav>
 
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/admin/tornei/nuovo}">+ Nuovo torneo</a>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Lista tornei</h1>
+        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/tornei/nuovo}" class="btn btn-success">
+            + Nuovo torneo
+        </a>
     </div>
 
-    <div>
-        <ul>
-            <li th:each="torneo : ${tornei}">
-                <a th:href="@{'/tornei/' + ${torneo.id}}"
-                   th:text="${torneo.nome}">Nome torneo</a>
-            </li>
-        </ul>
+    <div class="list-group">
+        <a th:each="torneo : ${tornei}"
+           th:href="@{'/tornei/' + ${torneo.id}}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span th:text="${torneo.nome}">Nome torneo</span>
+            <span class="badge bg-secondary" th:text="${torneo.anno}">2026</span>
+        </a>
     </div>
+</div>
+
 </body>
 </html>

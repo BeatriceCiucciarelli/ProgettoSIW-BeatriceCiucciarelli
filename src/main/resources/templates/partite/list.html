@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>Partite</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Calendario partite')}"></head>
 <body>
-    <h1>Calendario partite</h1>
+<nav th:replace="~{fragments/common :: nav}"></nav>
 
-    <div sec:authorize="hasAuthority('ADMIN')">
-        <a th:href="@{/admin/partite/nuova}">+ Registra partita</a>
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h1>Calendario partite</h1>
+        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{/admin/partite/nuova}" class="btn btn-success">
+            + Registra partita
+        </a>
     </div>
 
-    <div th:if="${partite != null and !partite.isEmpty()}">
-        <ul>
-            <li th:each="partita : ${partite}">
-                <a th:href="@{'/partite/' + ${partita.id}}">
-                    <span th:text="${partita.squadraHome.nome}">Squadra Home</span>
-                    -
-                    <span th:text="${partita.squadraAway.nome}">Squadra Away</span>
-                    |
-                    <span th:text="${partita.dataOra}">2026-06-01T18:00</span>
-                </a>
-            </li>
-        </ul>
+    <div th:if="${partite != null and !partite.isEmpty()}" class="list-group">
+        <a th:each="partita : ${partite}"
+           th:href="@{'/partite/' + ${partita.id}}"
+           class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+            <span>
+                <span th:text="${partita.squadraHome.nome}">Squadra Home</span>
+                <strong>vs</strong>
+                <span th:text="${partita.squadraAway.nome}">Squadra Away</span>
+            </span>
+            <span class="text-muted" th:text="${partita.dataOra}">2026-06-01T18:00</span>
+        </a>
     </div>
 
-    <div th:unless="${partite != null and !partite.isEmpty()}">
+    <div th:unless="${partite != null and !partite.isEmpty()}" class="alert alert-info">
         Nessuna partita presente.
     </div>
+</div>
+
 </body>
 </html>

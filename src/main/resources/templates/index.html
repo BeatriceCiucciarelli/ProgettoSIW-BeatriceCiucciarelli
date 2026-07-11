@@ -1,28 +1,48 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <title>Tornei</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Tornei Calcio')}"></head>
 <body>
-    <h1>Sistema Tornei di Calcio</h1>
+<nav th:replace="~{fragments/common :: nav}"></nav>
 
-    <div>
-        <span sec:authorize="!isAuthenticated()">
-            <a th:href="@{/login}">Login</a>
-        </span>
-        <span sec:authorize="isAuthenticated()">
-            Benvenuto, <span sec:authentication="name">utente</span> —
-            <form th:action="@{/logout}" method="post" style="display:inline">
-                <button type="submit">Logout</button>
-            </form>
-        </span>
+<div class="container">
+    <div class="p-5 mb-4 bg-light rounded-3">
+        <h1 class="display-5 fw-bold">Sistema Tornei di Calcio</h1>
+        <p class="col-md-8 fs-5">
+            Gestisci tornei, squadre, giocatori e partite di calcio amatoriale.
+        </p>
     </div>
 
-    <ul>
-        <li><a th:href="@{/tornei}">Tornei</a></li>
-        <li><a th:href="@{/squadre}">Squadre</a></li>
-        <li><a th:href="@{/partite}">Partite</a></li>
-    </ul>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Tornei</h5>
+                    <p class="card-text">Consulta i tornei attivi, le classifiche e i calendari.</p>
+                    <a th:href="@{/tornei}" class="btn btn-primary">Vai ai tornei</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Squadre</h5>
+                    <p class="card-text">Scopri le squadre partecipanti e le loro rose.</p>
+                    <a th:href="@{/squadre}" class="btn btn-primary">Vai alle squadre</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Partite</h5>
+                    <p class="card-text">Guarda il calendario e i risultati delle partite.</p>
+                    <a th:href="@{/partite}" class="btn btn-primary">Vai alle partite</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

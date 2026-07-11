@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Classifica</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Classifica')}"></head>
 <body>
+<nav th:replace="~{fragments/common :: nav}"></nav>
+
+<div class="container">
     <h1>
         Classifica -
         <span th:text="${torneo.nome}">Nome torneo</span>
     </h1>
 
-    <table border="1" cellpadding="5">
-        <thead>
+    <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
             <tr>
                 <th>#</th>
                 <th>Squadra</th>
@@ -28,10 +29,9 @@
             <tr th:each="riga, iter : ${classifica}">
                 <td th:text="${iter.count}">1</td>
                 <td>
-                    <a th:href="@{'/squadre/' + ${riga.squadra.id}}"
-                       th:text="${riga.squadra.nome}">Nome squadra</a>
+                    <a th:href="@{'/squadre/' + ${riga.squadra.id}}" th:text="${riga.squadra.nome}">Nome squadra</a>
                 </td>
-                <td th:text="${riga.puntiTotali}">0</td>
+                <td><strong th:text="${riga.puntiTotali}">0</strong></td>
                 <td th:text="${riga.partiteGiocate}">0</td>
                 <td th:text="${riga.vittorie}">0</td>
                 <td th:text="${riga.pareggi}">0</td>
@@ -43,8 +43,8 @@
         </tbody>
     </table>
 
-    <p>
-        <a th:href="@{'/tornei/' + ${torneo.id}}">&laquo; Torna al torneo</a>
-    </p>
+    <a th:href="@{'/tornei/' + ${torneo.id}}" class="btn btn-outline-secondary">&laquo; Torna al torneo</a>
+</div>
+
 </body>
 </html>
