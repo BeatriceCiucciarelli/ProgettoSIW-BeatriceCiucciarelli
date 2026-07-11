@@ -1,10 +1,12 @@
 package it.uniroma3.siw.tornei.model;
 
 import java.time.LocalDateTime;
-import org.springframework.format.annotation.DateTimeFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,6 +18,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Partita {
@@ -24,33 +29,42 @@ public class Partita {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotNull(message = "Data e ora sono obbligatorie")
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime dataOra;
 
+	@NotBlank(message = "Il luogo e' obbligatorio")
 	@Column(nullable = false)
 	private String luogo;
 
+	@Min(value = 0, message = "I goal non possono essere negativi")
 	private Integer goalsHome;
 
+	@Min(value = 0, message = "I goal non possono essere negativi")
 	private Integer goalsAway;
 
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private StatoPartita stato;
 
+	@NotNull(message = "Il torneo e' obbligatorio")
 	@ManyToOne
 	@JoinColumn(name = "torneo_id", nullable = false)
 	private Torneo torneo;
 
+	@NotNull(message = "La squadra home e' obbligatoria")
 	@ManyToOne
 	@JoinColumn(name = "squadra_home_id", nullable = false)
 	private Squadra squadraHome;
 
+	@NotNull(message = "La squadra away e' obbligatoria")
 	@ManyToOne
 	@JoinColumn(name = "squadra_away_id", nullable = false)
 	private Squadra squadraAway;
 
+	@NotNull(message = "L'arbitro e' obbligatorio")
 	@ManyToOne
 	@JoinColumn(name = "arbitro_id", nullable = false)
 	private Arbitro arbitro;
@@ -64,7 +78,6 @@ public class Partita {
 		CANCELED;
 	}
 
-	// COSTRUTTORE
 	public Partita() {
 	}
 

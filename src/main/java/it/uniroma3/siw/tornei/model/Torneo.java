@@ -14,6 +14,11 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Torneo {
@@ -22,11 +27,20 @@ public class Torneo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
+	@NotBlank(message = "Il nome del torneo e' obbligatorio")
+	@Size(max = 255, message = "Il nome non puo' superare 255 caratteri")
+	
 	@Column(nullable = false)
 	private String nome;
 	
+	@NotNull(message = "L'anno e' obbligatorio")
+	@Min(value = 1900, message = "L'anno deve essere successivo al 1900")
+	@Max(value = 2100, message = "L'anno non puo' superare il 2100")
+	
 	@Column(nullable = false)
 	private Integer anno;
+	
+	@Size(max = 2000, message = "La descrizione non puo' superare 2000 caratteri")
 	
 	@Column(length = 2000)
 	private String descrizione;

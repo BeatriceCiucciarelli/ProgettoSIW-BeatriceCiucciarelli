@@ -2,6 +2,7 @@ package it.uniroma3.siw.tornei.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +12,12 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Giocatore {
@@ -19,18 +26,28 @@ public class Giocatore {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank(message = "Il nome e' obbligatorio")
+	@Size(max = 255, message = "Il nome non puo' superare 255 caratteri")
 	@Column(nullable = false)
 	private String nome;
 
+	@NotBlank(message = "Il cognome e' obbligatorio")
+	@Size(max = 255, message = "Il cognome non puo' superare 255 caratteri")
 	@Column(nullable = false)
 	private String cognome;
-	 
+
+	@NotNull(message = "La data di nascita e' obbligatoria")
+	@Past(message = "La data di nascita deve essere nel passato")
 	@Column(nullable = false)
 	private LocalDate dataDiNascita;
-	 
+
+	@NotNull(message = "L'altezza e' obbligatoria")
+	@Min(value = 100, message = "L'altezza deve essere almeno 100 cm")
+	@Max(value = 250, message = "L'altezza non puo' superare 250 cm")
 	@Column(nullable = false)
 	private Integer altezza;
-	 
+
+	@NotNull(message = "Il ruolo e' obbligatorio")
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Ruolo ruolo;
@@ -41,12 +58,11 @@ public class Giocatore {
 		CENTROCAMPISTA,
 		ATTACCANTE
 	}
-	 
+
 	@ManyToOne
 	@JoinColumn(name = "squadra_id", nullable = false)
 	private Squadra squadra;
-	 
-	// COSTRUTTORE
+
 	public Giocatore() {
 	}
 

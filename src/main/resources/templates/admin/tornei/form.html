@@ -11,17 +11,27 @@
 
         <div>
             <label for="nome">Nome</label>
-            <input type="text" id="nome" th:field="*{nome}" required="required" />
+            <input type="text" id="nome" th:field="*{nome}" />
+            <!-- Mostra il messaggio di errore SOLO se questo campo specifico ha errori -->
+            <div style="color:red" th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}">
+                Errore nome
+            </div>
         </div>
 
         <div>
             <label for="anno">Anno</label>
-            <input type="number" id="anno" th:field="*{anno}" required="required" />
+            <input type="number" id="anno" th:field="*{anno}" />
+            <div style="color:red" th:if="${#fields.hasErrors('anno')}" th:errors="*{anno}">
+                Errore anno
+            </div>
         </div>
 
         <div>
             <label for="descrizione">Descrizione</label>
             <textarea id="descrizione" th:field="*{descrizione}" rows="4" cols="40"></textarea>
+            <div style="color:red" th:if="${#fields.hasErrors('descrizione')}" th:errors="*{descrizione}">
+                Errore descrizione
+            </div>
         </div>
 
         <button type="submit">Salva</button>
