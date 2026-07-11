@@ -10,6 +10,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.uniroma3.siw.tornei.dto.ClassificaApiDTO;
 import it.uniroma3.siw.tornei.dto.RigaClassifica;
 import it.uniroma3.siw.tornei.model.Partita;
 import it.uniroma3.siw.tornei.model.Squadra;
@@ -54,24 +55,6 @@ public class TorneoService {
         return torneo;
     }
 
-    /*
-     * Caso d'uso: visualizzazione della classifica del torneo (Sezione 4.1).
-     *
-     * Regole:
-     * - si parte da TUTTE le squadre iscritte al torneo (torneo.getSquadre()),
-     *   anche quelle che non hanno ancora giocato (compaiono con 0 punti)
-     * - si considerano solo le partite con stato PLAYED e risultato non nullo
-     * - punteggio: vittoria = 3, pareggio = 1, sconfitta = 0
-     * - ordinamento: punti desc, differenza reti desc, gol fatti desc, nome asc
-     *
-     * Operazione di sola lettura -> @Transactional(readOnly = true).
-     *
-     * NOTA SULLE PRESTAZIONI: questo metodo naviga torneo.getPartite() (relazione
-     * LAZY) e per ciascuna partita accede a squadraHome/squadraAway (relazioni
-     * EAGER di default su @ManyToOne). Con molte partite questo può generare un
-     * problema N+1 query: e' il caso d'uso scelto per l'analisi sperimentale
-     * richiesta dalla Sezione 8.2 della traccia (confronto LAZY/EAGER/join fetch).
-     */
     @Transactional(readOnly = true)
     public List<RigaClassifica> calcolaClassifica(Long torneoId) {
         Torneo torneo = this.torneoRepository.findById(torneoId)
@@ -96,8 +79,6 @@ public class TorneoService {
             RigaClassifica rigaHome = righePerSquadraId.get(partita.getSquadraHome().getId());
             RigaClassifica rigaAway = righePerSquadraId.get(partita.getSquadraAway().getId());
 
-            // difesa: se per qualche motivo la squadra non risulta piu' iscritta
-            // al torneo, semplicemente non la conteggiamo
             if (rigaHome == null || rigaAway == null) {
                 continue;
             }
@@ -139,5 +120,33 @@ public class TorneoService {
         );
 
         return classifica;
+    }
+
+    /*
+     * Versione "API-friendly" della classifica, usata dall'endpoint REST
+     * per il componente React (Sezione 9). Riusa calcolaClassifica() e
+     * mappa il risultato su un DTO piatto, sicuro da serializzare in JSON.
+     */
+    @Transactional(readOnly = true)
+    public List<ClassificaApiDTO> calcolaClassificaApi(Long torneoId) {
+        List<RigaClassifica> classifica = this.calcolaClassifica(torneoId);
+        List<ClassificaApiDTO> risultato = new ArrayList<>();
+
+        for (RigaClassifica riga : classifica) {
+            ClassificaApiDTO dto = new ClassificaApiDTO();
+            dto.setSquadraId(riga.getSquadra().getId());
+            dto.setSquadraNome(riga.getSquadra().getNome());
+            dto.setPunti(riga.getPuntiTotali());
+            dto.setPartiteGiocate(riga.getPartiteGiocate());
+            dto.setVittorie(riga.getVittorie());
+            dto.setPareggi(riga.getPareggi());
+            dto.setSconfitte(riga.getSconfitte());
+            dto.setGolFatti(riga.getGolFatti());
+            dto.setGolSubiti(riga.getGolSubiti());
+            dto.setDifferenzaReti(riga.getDifferenzaReti());
+            risultato.add(dto);
+        }
+
+        return risultato;
     }
 }

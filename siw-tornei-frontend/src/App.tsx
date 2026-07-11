@@ -1,122 +1,85 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import ClassificaTable from "./components/ClassificaTable";
+import { getClassifica, getTornei } from "./services/torneoService";
+import type { ClassificaRiga, TorneoSummary } from "./types";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [tornei, setTornei] = useState<TorneoSummary[]>([]);
+  const [torneoSelezionato, setTorneoSelezionato] = useState<number | null>(null);
+  const [classifica, setClassifica] = useState<ClassificaRiga[]>([]);
+  const [caricamentoTornei, setCaricamentoTornei] = useState(true);
+  const [caricamentoClassifica, setCaricamentoClassifica] = useState(false);
+  const [errore, setErrore] = useState<string | null>(null);
+
+  // Carica l'elenco dei tornei una sola volta, al mount del componente
+  useEffect(() => {
+    getTornei()
+      .then((dati) => {
+        setTornei(dati);
+        setCaricamentoTornei(false);
+        if (dati.length > 0) {
+          setTorneoSelezionato(dati[0].id);
+        }
+      })
+      .catch((err) => {
+        setErrore("Errore nel caricamento dei tornei: " + err.message);
+        setCaricamentoTornei(false);
+      });
+  }, []);
+
+  // Ricarica la classifica ogni volta che cambia il torneo selezionato
+  useEffect(() => {
+    if (torneoSelezionato === null) {
+      return;
+    }
+
+    setCaricamentoClassifica(true);
+    setErrore(null);
+
+    getClassifica(torneoSelezionato)
+      .then((dati) => {
+        setClassifica(dati);
+        setCaricamentoClassifica(false);
+      })
+      .catch((err) => {
+        setErrore("Errore nel caricamento della classifica: " + err.message);
+        setCaricamentoClassifica(false);
+      });
+  }, [torneoSelezionato]);
+
+  if (caricamentoTornei) {
+    return <p>Caricamento tornei...</p>;
+  }
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.tsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+    <div style={{ padding: "2rem", fontFamily: "sans-serif" }}>
+      <h1>Classifica Torneo</h1>
+
+      <div style={{ marginBottom: "1rem" }}>
+        <label htmlFor="torneo-select">Torneo: </label>
+        <select
+          id="torneo-select"
+          value={torneoSelezionato ?? ""}
+          onChange={(e) => setTorneoSelezionato(Number(e.target.value))}
         >
-          Count is {count}
-        </button>
-      </section>
+          {tornei.map((torneo) => (
+            <option key={torneo.id} value={torneo.id}>
+              {torneo.nome} ({torneo.anno})
+            </option>
+          ))}
+        </select>
+      </div>
 
-      <div className="ticks"></div>
+      {errore && <p style={{ color: "red" }}>{errore}</p>}
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      {caricamentoClassifica ? (
+        <p>Caricamento classifica...</p>
+      ) : (
+        <ClassificaTable righe={classifica} />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
