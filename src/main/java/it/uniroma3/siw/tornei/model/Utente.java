@@ -9,6 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 public class Utente {
@@ -17,9 +19,13 @@ public class Utente {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
+	@NotBlank
+	@Size(min = 3, max = 50)
 	@Column(nullable = false, unique = true)
 	private String username;
 
+	@NotBlank
+	@Size(min = 6)
 	@Column(nullable = false)
 	private String password;
 	 

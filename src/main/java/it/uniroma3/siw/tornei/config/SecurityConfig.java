@@ -53,13 +53,14 @@ public class SecurityConfig {
             .cors(Customizer.withDefaults())
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers(HttpMethod.GET,
-                    "/", "/login",
+                    "/", "/login", "/register",
                     "/tornei", "/tornei/**",
                     "/squadre", "/squadre/**",
                     "/partite", "/partite/**",
                     "/api/tornei/**",
                     "/css/**", "/js/**", "/images/**"
                 ).permitAll()
+                .requestMatchers(HttpMethod.POST, "/register").permitAll()
                 .requestMatchers("/commenti/**").authenticated()
                 .requestMatchers(HttpMethod.POST, "/partite/*/commenti").authenticated()
                 .requestMatchers("/admin/**").hasAnyAuthority("ADMIN")
