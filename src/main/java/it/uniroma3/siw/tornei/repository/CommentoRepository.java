@@ -1,9 +1,9 @@
 package it.uniroma3.siw.tornei.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 import it.uniroma3.siw.tornei.model.Commento;
 
-public interface CommentoRepository extends CrudRepository<Commento, Long>{
+public interface CommentoRepository extends JpaRepository<Commento, Long>{
 
 }

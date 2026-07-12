@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.uniroma3.siw.tornei.model.Giocatore;
-import it.uniroma3.siw.tornei.repository.GiocatoreRopository;
+import it.uniroma3.siw.tornei.repository.GiocatoreRepository;
 
 @Service
 public class GiocatoreService {
 
-    private final GiocatoreRopository giocatoreRepository;
+    private final GiocatoreRepository giocatoreRepository;
 
-    public GiocatoreService(GiocatoreRopository giocatoreRepository) {
+    public GiocatoreService(GiocatoreRepository giocatoreRepository) {
         this.giocatoreRepository = giocatoreRepository;
     }
 
