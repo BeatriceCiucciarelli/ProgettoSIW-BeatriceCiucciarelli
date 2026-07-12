@@ -36,9 +36,10 @@ public class SquadraController {
     @GetMapping("/squadre/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Optional<Squadra> squadraOptional = this.squadraService.findById(id);
-        if (squadraOptional.isPresent()) {
-            model.addAttribute("squadra", squadraOptional.get());
+        if (squadraOptional.isEmpty()) {
+            return "redirect:/squadre";
         }
+        model.addAttribute("squadra", squadraOptional.get());
         return "squadre/show";
     }
 

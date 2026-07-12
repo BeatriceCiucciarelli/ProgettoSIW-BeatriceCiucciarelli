@@ -50,9 +50,10 @@ public class PartitaController {
     @GetMapping("/partite/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Optional<Partita> partitaOptional = this.partitaService.findById(id);
-        if (partitaOptional.isPresent()) {
-            model.addAttribute("partita", partitaOptional.get());
+        if (partitaOptional.isEmpty()) {
+            return "redirect:/partite";
         }
+        model.addAttribute("partita", partitaOptional.get());
         return "partite/show";
     }
 

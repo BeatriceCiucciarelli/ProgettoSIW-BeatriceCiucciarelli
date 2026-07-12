@@ -29,9 +29,10 @@ public class TorneoController {
 	@GetMapping("/tornei/{id}")
 	public String show(@PathVariable("id") Long id, Model model) {
 	    Optional<Torneo> torneoOptional = this.torneoService.findById(id);
-	    if (torneoOptional.isPresent()) {
-	        model.addAttribute("torneo", torneoOptional.get());
+	    if (torneoOptional.isEmpty()) {
+	        return "redirect:/tornei";
 	    }
+	    model.addAttribute("torneo", torneoOptional.get());
 	    return "tornei/show";
 	}
 
