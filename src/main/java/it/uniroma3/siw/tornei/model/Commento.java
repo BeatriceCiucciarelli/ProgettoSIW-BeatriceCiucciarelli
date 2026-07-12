@@ -20,8 +20,8 @@ public class Commento {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Il commento non puo' essere vuoto")
-	@Size(max = 1000, message = "Il commento non puo' superare 1000 caratteri")
+	@NotBlank
+	@Size(max = 1000)
 	@Column(nullable = false, length = 1000)
 	private String testo;
 

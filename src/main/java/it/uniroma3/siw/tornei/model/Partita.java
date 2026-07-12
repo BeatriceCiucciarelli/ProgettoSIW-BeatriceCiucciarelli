@@ -29,19 +29,19 @@ public class Partita {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotNull(message = "Data e ora sono obbligatorie")
+	@NotNull
 	@Column(nullable = false)
 	@DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm")
 	private LocalDateTime dataOra;
 
-	@NotBlank(message = "Il luogo e' obbligatorio")
+	@NotBlank
 	@Column(nullable = false)
 	private String luogo;
 
-	@Min(value = 0, message = "I goal non possono essere negativi")
+	@Min(value = 0)
 	private Integer goalsHome;
 
-	@Min(value = 0, message = "I goal non possono essere negativi")
+	@Min(value = 0)
 	private Integer goalsAway;
 
 	@Enumerated(EnumType.STRING)

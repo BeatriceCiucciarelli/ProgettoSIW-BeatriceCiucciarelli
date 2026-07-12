@@ -27,19 +27,19 @@ public class Squadra {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Il nome della squadra e' obbligatorio")
-	@Size(max = 255, message = "Il nome non puo' superare 255 caratteri")
+	@NotBlank
+	@Size(max = 255)
 	@Column(nullable = false)
 	private String nome;
 
-	@NotBlank(message = "La citta' e' obbligatoria")
-	@Size(max = 255, message = "La citta' non puo' superare 255 caratteri")
+	@NotBlank
+	@Size(max = 255)
 	@Column(nullable = false)
 	private String citta;
 
-	@NotNull(message = "L'anno di fondazione e' obbligatorio")
-	@Min(value = 1800, message = "L'anno di fondazione deve essere successivo al 1800")
-	@Max(value = 2100, message = "L'anno di fondazione non puo' superare il 2100")
+	@NotNull
+	@Min(value = 1800)
+	@Max(value = 2100)
 	@Column(nullable = false)
 	private Integer annoFondazione;
 

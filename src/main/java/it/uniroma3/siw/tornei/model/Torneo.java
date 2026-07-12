@@ -27,20 +27,20 @@ public class Torneo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
-	@NotBlank(message = "Il nome del torneo e' obbligatorio")
-	@Size(max = 255, message = "Il nome non puo' superare 255 caratteri")
+	@NotBlank
+	@Size(max = 255)
 	
 	@Column(nullable = false)
 	private String nome;
 	
-	@NotNull(message = "L'anno e' obbligatorio")
-	@Min(value = 1900, message = "L'anno deve essere successivo al 1900")
-	@Max(value = 2100, message = "L'anno non puo' superare il 2100")
+	@NotNull
+	@Min(value = 1900)
+	@Max(value = 2100)
 	
 	@Column(nullable = false)
 	private Integer anno;
 	
-	@Size(max = 2000, message = "La descrizione non puo' superare 2000 caratteri")
+	@Size(max = 2000)
 	
 	@Column(length = 2000)
 	private String descrizione;

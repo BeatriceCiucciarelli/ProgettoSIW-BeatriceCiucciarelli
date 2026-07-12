@@ -20,18 +20,18 @@ public class Arbitro {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Il nome e' obbligatorio")
-	@Size(max = 255, message = "Il nome non puo' superare 255 caratteri")
+	@NotBlank
+	@Size(max = 255)
 	@Column(nullable = false)
 	private String nome;
 
-	@NotBlank(message = "Il cognome e' obbligatorio")
-	@Size(max = 255, message = "Il cognome non puo' superare 255 caratteri")
+	@NotBlank
+	@Size(max = 255)
 	@Column(nullable = false)
 	private String cognome;
 
-	@NotBlank(message = "Il codice arbitrale e' obbligatorio")
-	@Size(max = 50, message = "Il codice arbitrale non puo' superare 50 caratteri")
+	@NotBlank
+	@Size(max = 50)
 	@Column(nullable = false, unique = true)
 	private String codiceArbitrale;
 

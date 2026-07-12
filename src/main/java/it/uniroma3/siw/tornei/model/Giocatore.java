@@ -26,28 +26,28 @@ public class Giocatore {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@NotBlank(message = "Il nome e' obbligatorio")
-	@Size(max = 255, message = "Il nome non puo' superare 255 caratteri")
+	@NotBlank
+	@Size(max = 255)
 	@Column(nullable = false)
 	private String nome;
 
-	@NotBlank(message = "Il cognome e' obbligatorio")
-	@Size(max = 255, message = "Il cognome non puo' superare 255 caratteri")
+	@NotBlank
+	@Size(max = 255)
 	@Column(nullable = false)
 	private String cognome;
 
-	@NotNull(message = "La data di nascita e' obbligatoria")
-	@Past(message = "La data di nascita deve essere nel passato")
+	@NotNull
+	@Past
 	@Column(nullable = false)
 	private LocalDate dataDiNascita;
 
-	@NotNull(message = "L'altezza e' obbligatoria")
-	@Min(value = 100, message = "L'altezza deve essere almeno 100 cm")
-	@Max(value = 250, message = "L'altezza non puo' superare 250 cm")
+	@NotNull
+	@Min(value = 100)
+	@Max(value = 250)
 	@Column(nullable = false)
 	private Integer altezza;
 
-	@NotNull(message = "Il ruolo e' obbligatorio")
+	@NotNull
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
 	private Ruolo ruolo;
