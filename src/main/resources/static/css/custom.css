@@ -1,0 +1,69 @@
+/*
+ * Palette del sito "Tornei Calcio", a tema campo da calcio.
+ * Le variabili sono definite una sola volta qui e riusate in tutto il file
+ * (vedi slide "Variabili CSS" del corso: :root { --nome: valore; }).
+ *
+ * Questo file viene caricato DOPO bootstrap.min.css in fragments/common.html,
+ * quindi le regole scritte qui hanno la precedenza sulle regole di Bootstrap
+ * con lo stesso selettore (cascata CSS).
+ */
+
+:root {
+  --color-primary: #1b5e20;       /* verde scuro, colore principale del tema */
+  --color-primary-dark: #123d15;  /* verde ancora più scuro, per hover/active */
+  --color-primary-light: #e8f5e9; /* verde chiarissimo, per sfondi leggeri */
+  --color-accent: #f9a825;        /* oro/giallo, colore di accento */
+  --color-accent-dark: #c17900;   /* oro scuro, per hover sull'accento */
+}
+
+/* --- Navbar --- */
+.navbar.bg-dark {
+  background-color: var(--color-primary) !important;
+}
+
+/* --- Bottoni principali (es. "Accedi", "Esegui analisi") --- */
+.btn-primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn-primary:hover,
+.btn-primary:focus,
+.btn-primary:active {
+  background-color: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* --- Bottoni "outline" principali (es. "Vedi classifica (React)") --- */
+.btn-outline-primary {
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+.btn-outline-primary:hover,
+.btn-outline-primary:focus,
+.btn-outline-primary:active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+/* --- Intestazioni delle tabelle (es. tabella dell'analisi prestazioni) --- */
+.table-dark {
+  --bs-table-bg: var(--color-primary);
+  --bs-table-border-color: var(--color-primary-dark);
+}
+
+/* --- Link --- */
+a {
+  color: var(--color-primary-dark);
+}
+a:hover {
+  color: var(--color-accent-dark);
+}
+
+/* --- Accento oro su titoli principali, per dare carattere al tema --- */
+h1.card-title,
+.container > h1 {
+  border-bottom: 3px solid var(--color-accent);
+  padding-bottom: 0.3rem;
+  display: inline-block;
+}
