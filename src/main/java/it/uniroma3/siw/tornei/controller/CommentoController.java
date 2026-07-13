@@ -59,6 +59,7 @@ public class CommentoController {
 
         Commento commento = commentoOptional.get();
 
+        //se il commento non è tuo:
         if (!commento.getAutore().getUsername().equals(authentication.getName())) {
             throw new AccessDeniedException("Non puoi modificare un commento che non e' tuo");
         }

@@ -34,14 +34,17 @@ public class AuthenticationController {
 
 	@PostMapping("/register")
 	public String registraUtente(@Valid @ModelAttribute("utente") Utente utente, BindingResult bindingResult) {
+		//se non funziona:
 		if (bindingResult.hasErrors()) {
 			return "register";
 		}
-
+		//altrimenti:
 		try {
 			this.utenteService.registraNuovoUtente(utente);
 			return "redirect:/login?registrato";
-		} catch (UsernameGiaRegistratoException e) {
+		} 
+		//e se dovesse essere già registrato:
+		catch (UsernameGiaRegistratoException e) {
 			bindingResult.rejectValue("username", "utente.duplicate", "Questo username è già in uso");
 			return "register";
 		}

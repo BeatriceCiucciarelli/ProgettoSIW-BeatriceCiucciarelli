@@ -48,7 +48,7 @@ public class Partita {
 	@Column(nullable = false)
 	private StatoPartita stato;
 
-	// NOTA: nessun @NotNull su queste 4 associazioni. Vengono assegnate dal
+	// nessun @NotNull su queste 4 associazioni. Vengono assegnate dal
 	// controller DOPO il binding iniziale del form (l'utente sceglie solo
 	// gli ID da una <select>), quindi al momento in cui @Valid scatta
 	// sarebbero sempre null. L'integrita' e' comunque garantita da
