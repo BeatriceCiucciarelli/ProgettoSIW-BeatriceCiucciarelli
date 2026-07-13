@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/common :: head(title='Classifica (React)')}"></head>
+<body>
+<nav th:replace="~{fragments/common :: nav}"></nav>
+
+<div class="container">
+    <h1 class="mb-3">Classifica — versione React</h1>
+
+    <p class="text-muted">
+        Questa vista è realizzata con un componente React separato (app Vite su
+        <code>http://localhost:5173</code>), che consuma i dati tramite l'endpoint REST
+        <code>/api/tornei</code>. Seleziona il torneo dal menu a tendina dentro il riquadro
+        qui sotto (l'app React gestisce autonomamente la selezione del torneo).
+    </p>
+
+    <div class="alert alert-warning" role="alert">
+        Se il riquadro sotto appare vuoto, assicurati di aver avviato il frontend React in
+        locale con <code>npm run dev</code> nella cartella <code>siw-tornei-frontend</code>
+        (deve essere raggiungibile su <code>http://localhost:5173</code>).
+    </div>
+
+    <div class="border rounded overflow-hidden mb-3" style="height: 70vh;">
+        <iframe src="http://localhost:5173"
+                title="Classifica torneo (React)"
+                style="width: 100%; height: 100%; border: none;">
+        </iframe>
+    </div>
+
+    <a href="http://localhost:5173" target="_blank" rel="noopener" class="btn btn-outline-secondary btn-sm">
+        Apri in una nuova scheda
+    </a>
+
+    <div>
+        <a th:href="@{'/tornei/' + ${torneo.id}}" class="btn btn-link mt-3">← Torna al torneo</a>
+    </div>
+</div>
+
+</body>
+</html>

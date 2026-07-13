@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <title>Analisi prestazioni</title>
-</head>
+<head th:replace="~{fragments/common :: head(title='Analisi prestazioni')}"></head>
 <body>
-    <h1>Analisi sperimentale: strategie di accesso ai dati</h1>
+<nav th:replace="~{fragments/common :: nav}"></nav>
 
-    <p>
-        Confronto tra diverse strategie di fetch per il caso d'uso
-        "elenco delle partite di un torneo, con le rispettive squadre
-        home/away" (lo stesso dato usato per calcolare la classifica).
+<div class="container">
+    <h1 class="mb-3">Analisi sperimentale: strategie di accesso ai dati</h1>
+
+    <p class="text-muted">
+        Confronto tra diverse strategie di fetch per il caso d'uso "elenco delle partite di un
+        torneo, con le rispettive squadre home/away" (lo stesso dato usato per calcolare la
+        classifica). Si misurano il numero di query SQL eseguite (dalle statistiche interne di
+        Hibernate) e il tempo di esecuzione in millisecondi.
     </p>
 
-    <form th:action="@{/admin/analisi-prestazioni}" method="get">
-        <label for="torneoId">Torneo</label>
-        <select id="torneoId" name="torneoId">
-            <option th:each="torneo : ${tornei}"
-                    th:value="${torneo.id}"
-                    th:text="${torneo.nome}"
-                    th:selected="${torneoSelezionato != null and torneo.id == torneoSelezionato}">
-            </option>
-        </select>
-        <button type="submit">Esegui analisi</button>
+    <form th:action="@{/admin/analisi-prestazioni}" method="get" class="row g-2 align-items-end mb-4">
+        <div class="col-auto">
+            <label for="torneoId" class="form-label">Torneo</label>
+            <select id="torneoId" name="torneoId" class="form-select">
+                <option th:each="torneo : ${tornei}"
+                        th:value="${torneo.id}"
+                        th:text="${torneo.nome}"
+                        th:selected="${torneoSelezionato != null and torneo.id == torneoSelezionato}">
+                </option>
+            </select>
+        </div>
+        <div class="col-auto">
+            <button type="submit" class="btn btn-primary">Esegui analisi</button>
+        </div>
     </form>
 
     <div th:if="${risultati}">
-        <h2>Risultati</h2>
-        <table border="1" cellpadding="5">
-            <thead>
+        <h2 class="h4">Risultati</h2>
+        <table class="table table-bordered table-striped">
+            <thead class="table-dark">
                 <tr>
                     <th>Strategia</th>
                     <th>Partite trovate</th>
@@ -44,6 +50,36 @@
                 </tr>
             </tbody>
         </table>
+
+        <div class="card mt-4">
+            <div class="card-body">
+                <h3 class="h5 card-title">Discussione dei risultati</h3>
+                <p class="card-text">
+                    La strategia 1 (query derivata, fetch LAZY di default) soffre del problema
+                    N+1: per ogni partita restituita dalla query iniziale, Hibernate esegue una
+                    query separata per caricare <code>squadraHome</code> e una per
+                    <code>squadraAway</code>, per un totale di circa <code>1 + 2N</code> query
+                    (dove N è il numero di partite del torneo).
+                </p>
+                <p class="card-text">
+                    Le strategie 2 (<code>JOIN FETCH</code> in una query JPQL scritta a mano) e 3
+                    (<code>@EntityGraph</code> applicato al metodo del repository) risolvono il
+                    problema caricando partite e squadre associate in un'unica query SQL con dei
+                    JOIN, indipendentemente dal numero di partite. Il numero di query eseguite
+                    nella tabella sopra dovrebbe quindi restare costante (tipicamente 1) per
+                    entrambe, mentre cresce linearmente con N per la strategia 1.
+                </p>
+                <p class="card-text mb-0">
+                    Il tempo in millisecondi è indicativo: su un dataset di test piccolo può
+                    essere rumoroso (poche query in più o in meno pesano relativamente poco sul
+                    tempo totale), ma il numero di query è una prova oggettiva e riproducibile
+                    della differenza tra le strategie, indipendente dal carico della macchina in
+                    quel momento.
+                </p>
+            </div>
+        </div>
     </div>
+</div>
+
 </body>
 </html>
