@@ -30,6 +30,14 @@ insert into arbitro (nome, cognome, codice_arbitrale) values ('Giorgio', 'Mancin
 
 insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-09-10 15:00:00', 'Stadio Libero Liberati', 2, 1, 'PLAYED', 1, 1, 2, 1);
 insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-09-17 16:00:00', 'Stadio Orvieto', 0, 0, 'PLAYED', 1, 3, 4, 2);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-09-24 15:00:00', 'Stadio Libero Liberati', 3, 0, 'PLAYED', 1, 1, 3, 1);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-10-01 16:00:00', 'Stadio Curi', 1, 1, 'PLAYED', 1, 2, 4, 3);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-10-08 15:00:00', 'Campo Comunale Foligno', 0, 2, 'PLAYED', 1, 4, 1, 2);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-10-15 16:00:00', 'Stadio Curi', 2, 2, 'PLAYED', 1, 2, 3, 1);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-11-05 15:00:00', 'Stadio Curi', null, null, 'SCHEDULED', 1, 2, 1, 3);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-11-12 16:00:00', 'Campo Comunale Foligno', null, null, 'SCHEDULED', 1, 4, 3, 2);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-11-19 15:00:00', 'Stadio Orvieto', null, null, 'SCHEDULED', 1, 3, 1, 1);
+insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-11-26 16:00:00', 'Campo Comunale Foligno', null, null, 'SCHEDULED', 1, 4, 2, 3);
 insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2025-10-05 15:30:00', 'Campo Comunale Foligno', null, null, 'SCHEDULED', 2, 4, 1, 3);
 insert into partita (data_ora, luogo, goals_home, goals_away, stato, torneo_id, squadra_home_id, squadra_away_id, arbitro_id) values ('2026-06-15 18:00:00', 'Stadio Libero Liberati', null, null, 'SCHEDULED', 3, 1, 3, 1);
 

@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head th:replace="~{fragments/common :: head(title=${torneo.nome})}"></head>
+<head th:replace="~{fragments/common :: head(title=${torneo != null ? torneo.nome : 'Torneo'})}"></head>
 <body>
 <nav th:replace="~{fragments/common :: nav}"></nav>
 
 <div class="container">
-    <div class="card">
+    <div th:if="${torneo}">
+    <div class="card mb-4">
         <div class="card-body">
             <h1 class="card-title" th:text="${torneo.nome}">Nome torneo</h1>
             <h6 class="card-subtitle mb-3 text-muted" th:text="${torneo.anno}">2026</h6>
@@ -24,6 +25,54 @@
                 Modifica torneo
             </a>
         </div>
+    </div>
+
+    <h2 class="h4">Squadre partecipanti</h2>
+    <div th:if="${torneo.squadre != null and !torneo.squadre.isEmpty()}" class="mb-4">
+        <ul class="list-group">
+            <li class="list-group-item" th:each="squadra : ${torneo.squadre}">
+                <a th:href="@{'/squadre/' + ${squadra.id}}" th:text="${squadra.nome}">Nome squadra</a>
+                <span class="text-muted" th:text="'(' + ${squadra.citta} + ')'">(Città)</span>
+            </li>
+        </ul>
+    </div>
+    <div th:unless="${torneo.squadre != null and !torneo.squadre.isEmpty()}" class="alert alert-info mb-4">
+        Nessuna squadra iscritta a questo torneo.
+    </div>
+
+    <h2 class="h4">Calendario partite</h2>
+    <div th:if="${torneo.partite != null and !torneo.partite.isEmpty()}" class="mb-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Data e ora</th>
+                    <th>Partita</th>
+                    <th>Luogo</th>
+                    <th>Stato</th>
+                    <th>Risultato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="partita : ${torneo.partite}">
+                    <td th:text="${#temporals.format(partita.dataOra, 'dd/MM/yyyy HH:mm')}">01/01/2026 15:00</td>
+                    <td>
+                        <a th:href="@{'/partite/' + ${partita.id}}"
+                           th:text="${partita.squadraHome.nome} + ' - ' + ${partita.squadraAway.nome}">Home - Away</a>
+                    </td>
+                    <td th:text="${partita.luogo}">Luogo</td>
+                    <td th:text="${partita.stato}">SCHEDULED</td>
+                    <td th:text="${partita.stato.name() == 'PLAYED'} ? (${partita.goalsHome} + ' - ' + ${partita.goalsAway}) : '-'">-</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div th:unless="${torneo.partite != null and !torneo.partite.isEmpty()}" class="alert alert-info mb-4">
+        Nessuna partita in programma per questo torneo.
+    </div>
+    </div>
+
+    <div th:unless="${torneo}" class="alert alert-warning">
+        Torneo non trovato.
     </div>
 </div>
 
